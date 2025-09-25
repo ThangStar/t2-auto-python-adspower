@@ -32,6 +32,7 @@
         .brand-gradient {
             background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -101,13 +102,95 @@
         .log-hidden {
             display: none !important;
         }
+
+        /* Splash Screen Styles */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .splash-content {
+            text-align: center;
+            color: #334155;
+        }
+
+        .splash-logo {
+            max-width: 200px;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            animation: logoFloat 2s ease-in-out infinite alternate;
+        }
+
+        .splash-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(51, 65, 85, 0.2);
+            border-top: 4px solid #334155;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .splash-text {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0;
+            opacity: 0.8;
+            color: #64748b;
+        }
+
+        @keyframes logoFloat {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .splash-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container-fluid min-vh-100 d-flex flex-column p-0">
+    <!-- Splash Screen -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-content">
+            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhO_SYr_0ToVSpQY_sqrQj7valPMeLGGb8q2uh57ET7ljqT0cjeE9u9fvy3Nfa-bK5rERnUJevg8523LBQViIlmyBlCDMIBWxj3wUaHamm9q4-07kYzTjDjxp2McILUqWWGpdDwDMRnmnjyuv78xHuSwnHjUiVEcUSKVpzFXO4FmyfyGNeRID-NR0wY25k" alt="Logo" class="splash-logo">
+            <div class="splash-loading">
+                <div class="spinner"></div>
+                <p class="splash-text">Đang tải...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="container-fluid min-vh-100 d-flex flex-column p-0" style="display: none;">
         <nav class="navbar navbar-light bg-white border-bottom px-3 py-2">
-            <span class="navbar-brand mb-0 h4 fw-bold brand-gradient">T2 AUTO</span>
+            <span class="navbar-brand mb-0 h4 fw-bold brand-gradient">T2 TOOL</span>
             <span class="muted small">FB: mt.meow.meow</span>
         </nav>
 
@@ -268,6 +351,26 @@
     </div>
 
     <script>
+        // Splash Screen Management
+        function initSplashScreen() {
+            const splashScreen = document.getElementById('splashScreen');
+            const mainApp = document.getElementById('mainApp');
+            
+            // Show splash screen for 3 seconds
+            setTimeout(() => {
+                splashScreen.classList.add('fade-out');
+                
+                // After fade animation completes, show main app
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    mainApp.style.display = 'flex';
+                }, 500); // Match CSS transition duration
+            }, 3000); // 3 seconds splash duration
+        }
+
+        // Initialize splash screen when page loads
+        document.addEventListener('DOMContentLoaded', initSplashScreen);
+
         const userIdInput = document.getElementById('userId');
         const runBtn = document.getElementById('runBtn');
         const statusBox = document.getElementById('status');
