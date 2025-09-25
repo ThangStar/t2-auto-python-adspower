@@ -1,0 +1,1 @@
+$env:ADSPOWER_USER_ID = 'k1571o14'

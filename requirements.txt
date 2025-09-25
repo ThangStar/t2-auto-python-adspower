@@ -1,0 +1,6 @@
+selenium==4.24.0
+requests>=2.31.0,<3
+
+pyautogui
+pywebview>=4.4
+google-genai
